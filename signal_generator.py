@@ -6,7 +6,7 @@ class SignalGenerator:
     This class prepares a dataset for training. It generates a linearly increasing sine function with noise and incident
     applied.
     """
-    def __init__(self, freq = 2, time_range = 20, num_of_probes = 10000, next_H_steps = 20, prev_W_steps = 20):
+    def __init__(self, next_H_steps = 20, prev_W_steps = 20, freq = 2, time_range = 20, num_of_probes = 10000):
         self.freq = freq
         self.time_range = time_range
         self.num_of_probes = num_of_probes
@@ -53,11 +53,16 @@ class SignalGenerator:
             xs.append(x)
             ys.append(y)
 
-        return np.array(xs), np.array(ys)
+        xs = np.array(xs)
+        ys = np.array(ys)
+
+        trainX = xs[:,:,np.newaxis]
+        trainY = ys[:, np.newaxis]
+
+        return trainX, trainY
 
 if __name__ == "__main__":
     ds = SignalGenerator()
     x,y = ds.prepare_dataset()
-    print(x.shape, y.shape)
-    print(np.sum(y))
+    print(len(x))
     # pass
