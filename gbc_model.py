@@ -1,6 +1,7 @@
 from signal_generator import SignalGenerator
 from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.metrics import roc_auc_score
+from sklearn.metrics import roc_auc_score, recall_score, precision_score, confusion_matrix, ConfusionMatrixDisplay
+from matplotlib import pyplot as plt
 
 class IncidentModel:
     def __init__(self):
@@ -22,8 +23,17 @@ class IncidentModel:
         x = x.reshape(len(x), -1)
         y = y.reshape(len(y), -1)
         pred_y = self.gbc.predict(x)
-        acc = roc_auc_score(y, pred_y)
-        print("Gradient Boosting Classifier ROC AUC score is : {:.2f}".format(acc))
+        roc = roc_auc_score(y, pred_y)
+        recall = recall_score(y, pred_y)
+        precision = precision_score(y, pred_y)
+
+        print(f"ROC AUC: {roc:.2f}, RECALL: {recall}, PRECISION: {precision}")
+
+        cm = confusion_matrix(y, pred_y)
+        cm_display = ConfusionMatrixDisplay(confusion_matrix = cm, display_labels=[0,1])
+        cm_display.plot()
+        plt.show()
+
 
 if __name__ == "__main__":
     im = IncidentModel()
