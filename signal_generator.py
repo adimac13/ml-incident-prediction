@@ -48,7 +48,7 @@ class SignalGenerator:
 
             i += len_of_incident + 800 # To avoid incident overlapping
 
-        self.signal = (self.signal - min(self.signal)) / (max(self.signal) - min(self.signal))
+        # self.signal = (self.signal - min(self.signal)) / (max(self.signal) - min(self.signal))
 
 
         # plt.plot(time, self.signal)
