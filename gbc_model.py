@@ -2,29 +2,30 @@ from signal_generator import SignalGenerator
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.metrics import roc_auc_score
 
-if __name__ == "__main__":
-    ds = SignalGenerator(seed = 0)
-    ds_t = SignalGenerator(seed=3)
-
-    # Data for training
-    x,y = ds.prepare_dataset()
-    x = x.reshape(len(x), -1)
-    y = y.reshape(len(y), -1)
-
-    # Data for testing
-    x_t,y_t = ds_t.prepare_dataset()
-    x_t = x_t.reshape(len(x_t), -1)
-    y_t = y_t.reshape(len(y_t), -1)
-
-
-
-    gbc = GradientBoostingClassifier(n_estimators=300,
+class IncidentModel:
+    def __init__(self):
+        self.train_dataset = SignalGenerator(seed = 0)
+        self.test_dataset = SignalGenerator(seed=3)
+        self.gbc = GradientBoostingClassifier(n_estimators=300,
                                      learning_rate=0.05,
                                      random_state=100,
                                      max_features=5)
-    gbc.fit(x, y)
 
-    pred_y = gbc.predict(x_t)
+    def train(self):
+        x, y = self.train_dataset.prepare_dataset()
+        x = x.reshape(len(x), -1)
+        y = y.reshape(len(y), -1)
+        self.gbc.fit(x, y)
 
-    acc = roc_auc_score(y_t, pred_y)
-    print("Gradient Boosting Classifier accuracy is : {:.2f}".format(acc))
+    def test(self):
+        x, y = self.test_dataset.prepare_dataset()
+        x = x.reshape(len(x), -1)
+        y = y.reshape(len(y), -1)
+        pred_y = self.gbc.predict(x)
+        acc = roc_auc_score(y, pred_y)
+        print("Gradient Boosting Classifier ROC AUC score is : {:.2f}".format(acc))
+
+if __name__ == "__main__":
+    im = IncidentModel()
+    im.train()
+    im.test()
