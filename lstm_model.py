@@ -116,7 +116,7 @@ class IncidentModel(pl.LightningModule):
 
         return loss
 
-if __name__ == "__main__":
+def IncidentModel_train():
     idm = IncidentDataModule()
     idm.setup()
 
@@ -124,3 +124,13 @@ if __name__ == "__main__":
     logger = TensorBoardLogger('./logs', name = 'incident-model')
     trainer = pl.Trainer(logger = logger, max_epochs = 50, accelerator='gpu', gradient_clip_val=1.0)
     trainer.fit(incident_model, idm)
+
+if __name__ == "__main__":
+    # idm = IncidentDataModule()
+    # idm.setup()
+    #
+    # incident_model = IncidentModel()
+    # logger = TensorBoardLogger('./logs', name = 'incident-model')
+    # trainer = pl.Trainer(logger = logger, max_epochs = 50, accelerator='gpu', gradient_clip_val=1.0)
+    # trainer.fit(incident_model, idm)
+    pass
